@@ -1,8 +1,8 @@
-# 📱 Staj Forum Flutter
+# Staj App Flutter
 
 StajForum web uygulamasının Flutter ile geliştirilen eşlenik sürümü. React/Vite tabanlı `staj-forum-web` ile aynı ekran akışlarını ve backend API entegrasyonunu içerir.
 
-## 🚀 Özellikler
+## Özellikler
 
 - Anasayfa, Forum, ChatSTJ, Hakkında ve İletişim sayfaları
 - Forum topic listeleme ve oluşturma (backend entegrasyonlu)
@@ -10,7 +10,7 @@ StajForum web uygulamasının Flutter ile geliştirilen eşlenik sürümü. Reac
 - Responsive AppBar / Drawer / Footer bileşenleri
 - Dio tabanlı merkezi API istemcisi
 
-## 🔌 Backend Bağlantısı
+## Backend Bağlantısı
 
 Varsayılan API taban adresi `lib/config/api_config.dart` üzerinden belirlenir:
 
@@ -37,15 +37,14 @@ flutter run -d chrome --dart-define API_BASE_URL=https://demo.stajforum.com/api
 
 Android/iOS cihazlarında kendi makinenize erişebilmek için gerekli network/security ayarlarını `FRONTEND_BACKEND_BAGLANTI_REHBERI.txt` dokümanından kontrol edin.
 
-## 🧪 Test
+## Test
 
 ```bash
 flutter test
 ```
 
-## 📄 Notlar
+## Notlar
 
 - Backend API'si çalışır durumda değilse forum ve iletişim sayfaları bağlantı hatası gösterecektir.
 - Hata mesajları, kullanılan API adresini de belirterek daha kolay debug edilmesine yardımcı olur.
 - Production dağıtımlarında mutlaka gerçek API URL'sini `API_BASE_URL` ile geçin. 
-# stajappflutter
