@@ -100,38 +100,40 @@ class _IletisimPageState extends State<IletisimPage> {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(32),
-            child: Center(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+              child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 700),
-                child: Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                      'İletişim',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
+                      Text(
+                        'İletişim 📞',
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.textPrimary,
+                            ),
                       ),
-                    ),
-                      const SizedBox(height: 8),
-                      const Text(
+                      const SizedBox(height: 12),
+                      Text(
                         'Sorularınız, önerileriniz veya destek talepleriniz için bizimle iletişime geçebilirsiniz.',
-                        style: TextStyle(fontSize: 16),
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: AppTheme.textSecondary,
+                            ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 32),
                       if (_showSuccess)
                         Container(
                           width: double.infinity,
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: Colors.green.shade50,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.green.shade200),
+                            color: Colors.green.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.green),
                           ),
                           child: const Text(
                             '✓ Başarılı! Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.',
-                            style: TextStyle(color: Colors.green),
+                            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
                           ),
                         ),
                       if (_errorMessage != null) ...[
@@ -139,13 +141,13 @@ class _IletisimPageState extends State<IletisimPage> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: Colors.red.shade50,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.red.shade200),
+                            color: AppTheme.errorColor.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: AppTheme.errorColor),
                           ),
                           child: Text(
                             '✗ Hata: $_errorMessage',
-                            style: const TextStyle(color: Colors.red),
+                            style: const TextStyle(color: AppTheme.errorColor, fontWeight: FontWeight.bold),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -233,11 +235,17 @@ class _IletisimPageState extends State<IletisimPage> {
                               },
                               onChanged: (_) => setState(() {}),
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 24),
                             SizedBox(
                               width: double.infinity,
+                              height: 50,
                               child: ElevatedButton(
                                 onPressed: _isSubmitting ? null : _handleSubmit,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppTheme.primaryColor,
+                                  foregroundColor: Colors.black,
+                                  textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                ),
                                 child: Text(
                                   _isSubmitting
                                       ? 'Gönderiliyor...'
@@ -272,7 +280,7 @@ class _IletisimPageState extends State<IletisimPage> {
     ValueChanged<String>? onChanged,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -280,7 +288,8 @@ class _IletisimPageState extends State<IletisimPage> {
             label,
             style: const TextStyle(
               fontWeight: FontWeight.w600,
-              color: AppTheme.colorTextPrimary,
+              color: AppTheme.textPrimary,
+              fontSize: 16,
             ),
           ),
           const SizedBox(height: 8),
@@ -290,9 +299,24 @@ class _IletisimPageState extends State<IletisimPage> {
             keyboardType: keyboardType,
             validator: validator,
             onChanged: onChanged,
+            style: const TextStyle(color: AppTheme.textPrimary),
             decoration: InputDecoration(
               hintText: hint,
-              border: const OutlineInputBorder(),
+              hintStyle: const TextStyle(color: AppTheme.textSecondary),
+              filled: true,
+              fillColor: AppTheme.surfaceDark,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: AppTheme.surfaceLight),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: AppTheme.surfaceLight),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: AppTheme.primaryColor),
+              ),
             ),
           ),
           if (helper != null)
@@ -302,7 +326,7 @@ class _IletisimPageState extends State<IletisimPage> {
                 helper,
                 style: const TextStyle(
                   fontSize: 12,
-                  color: AppTheme.colorTextMuted,
+                  color: AppTheme.textSecondary,
                 ),
               ),
             ),

@@ -15,13 +15,14 @@ class HakkindaPage extends StatelessWidget {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
               child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 900),
                   child: Column(
                     children: [
                       _buildSection(
+                        context,
                         title: '📋 Forum Nedir?',
                         description:
                             'Forum, StajForum topluluğunun kalbidir. Burada öğrenciler staj deneyimlerini paylaşabilir ve firmalar hakkında sorular sorup cevaplar alabilirsiniz.',
@@ -33,11 +34,13 @@ class HakkindaPage extends StatelessWidget {
                         ],
                       ),
                       _buildSection(
+                        context,
                         title: '💬 ChatSTJ Nedir?',
                         description:
                             'ChatSTJ, StajForum\'un canlı sohbet özelliğidir. Gerçek zamanlı olarak yapay zeka ile iletişim kurabilir, sorularınıza anında cevap alabilirsiniz.',
                       ),
                       _buildSection(
+                        context,
                         title: '🚀 Nasıl Başlanır?',
                         features: const [
                           '✅ Adım 1: Forum bölümüne giderek başka öğrencilerin paylaşımlarını okuyun',
@@ -47,6 +50,7 @@ class HakkindaPage extends StatelessWidget {
                         ],
                       ),
                       _buildSection(
+                        context,
                         title: '📋 Topluluk Kuralları',
                         features: const [
                           '🤝 Saygılı Ol: Tüm üyelere saygı gösterin, kibar kalın',
@@ -57,6 +61,7 @@ class HakkindaPage extends StatelessWidget {
                         ],
                       ),
                       _buildSection(
+                        context,
                         title: '📞 İletişim & Destek',
                         description:
                             'Sorularınız, önerileriniz veya sorun yaşadığınız durumlarda lütfen iletişime geçin.',
@@ -80,7 +85,8 @@ class HakkindaPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSection({
+  Widget _buildSection(
+    BuildContext context, {
     required String title,
     String? description,
     List<String>? features,
@@ -88,15 +94,16 @@ class HakkindaPage extends StatelessWidget {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.only(bottom: 24),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: AppTheme.colorBgTertiary,
-        borderRadius: BorderRadius.circular(10),
+        color: AppTheme.surfaceDark.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppTheme.surfaceLight),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -105,50 +112,47 @@ class HakkindaPage extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.colorPrimary,
-            ),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: AppTheme.primaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           if (description != null)
             Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.only(bottom: 16),
               child: Text(
                 description,
-                style: const TextStyle(
-                  fontSize: 16,
-                  height: 1.7,
-                  color: AppTheme.colorTextPrimary,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      height: 1.6,
+                      color: AppTheme.textPrimary,
+                    ),
               ),
             ),
           if (features != null)
-            ...features.map((feature) => _buildFeatureItem(feature)),
+            ...features.map((feature) => _buildFeatureItem(context, feature)),
         ],
       ),
     );
   }
 
-  Widget _buildFeatureItem(String text) {
+  Widget _buildFeatureItem(BuildContext context, String text) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
-        color: AppTheme.colorPrimaryLight,
-        borderRadius: BorderRadius.circular(6),
+        color: AppTheme.backgroundDark,
+        borderRadius: BorderRadius.circular(12),
         border: const Border(
-          left: BorderSide(color: AppTheme.colorBorderAccent, width: 5),
+          left: BorderSide(color: AppTheme.secondaryColor, width: 4),
         ),
       ),
       child: Text(
         text,
-        style: const TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
-          color: AppTheme.colorTextPrimary,
-        ),
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppTheme.textSecondary,
+              fontWeight: FontWeight.w500,
+            ),
       ),
     );
   }

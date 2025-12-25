@@ -20,7 +20,7 @@ class ForumKonuSecimiPage extends StatelessWidget {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
               child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 900),
@@ -31,25 +31,35 @@ class ForumKonuSecimiPage extends StatelessWidget {
                         width: double.infinity,
                         padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          color: AppTheme.colorBgTertiary,
-                          borderRadius: BorderRadius.circular(10),
+                          color: AppTheme.surfaceDark,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: AppTheme.primaryColor.withOpacity(0.3)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppTheme.primaryColor.withOpacity(0.05),
+                              blurRadius: 20,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Forum Konusu #$id',
-                              style: const TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                    color: AppTheme.textPrimary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 12),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text('Yazar: Yükleniyor...'),
-                                Text('Tarih: Yükleniyor...'),
+                              children: [
+                                Text('Yazar: Yükleniyor...',
+                                    style: TextStyle(color: AppTheme.textSecondary)),
+                                Text('Tarih: Yükleniyor...',
+                                    style: TextStyle(color: AppTheme.textSecondary)),
                               ],
                             ),
                           ],
@@ -60,13 +70,15 @@ class ForumKonuSecimiPage extends StatelessWidget {
                         width: double.infinity,
                         padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: AppTheme.colorBorderLight),
+                          color: AppTheme.backgroundDark,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: AppTheme.surfaceLight),
                         ),
-                        child: const Text(
+                        child: Text(
                           'Sayfa içeriği gelecek.',
-                          style: TextStyle(fontSize: 16),
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                color: AppTheme.textPrimary,
+                              ),
                         ),
                       ),
                       const SizedBox(height: 32),
@@ -74,23 +86,25 @@ class ForumKonuSecimiPage extends StatelessWidget {
                         width: double.infinity,
                         padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          color: AppTheme.colorBgTertiary,
-                          borderRadius: BorderRadius.circular(10),
+                          color: AppTheme.surfaceDark,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: AppTheme.surfaceLight),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
+                              children: [
                                 Text(
                                   'Yanıtlar',
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                        color: AppTheme.primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
-                                Text('0 yanıt'),
+                                Text('0 yanıt',
+                                    style: TextStyle(color: AppTheme.textSecondary)),
                               ],
                             ),
                             const SizedBox(height: 16),
@@ -98,14 +112,15 @@ class ForumKonuSecimiPage extends StatelessWidget {
                               width: double.infinity,
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                                border:
-                                    Border.all(color: AppTheme.colorBorderLight),
+                                color: AppTheme.backgroundDark.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: AppTheme.surfaceLight),
                               ),
-                              child: const Text(
+                              child: Text(
                                 'Henüz yanıt bulunmamaktadır.',
-                                style: TextStyle(fontSize: 15),
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      color: AppTheme.textSecondary,
+                                    ),
                               ),
                             ),
                           ],

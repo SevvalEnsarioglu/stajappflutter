@@ -8,27 +8,26 @@ class BottomBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 24),
       decoration: const BoxDecoration(
-        color: AppTheme.colorSecondaryDark,
+        color: AppTheme.backgroundDark, // Match scaffold background or slightly lighter
         border: Border(
-          top: BorderSide(color: AppTheme.colorSecondary, width: 2),
+          top: BorderSide(color: AppTheme.primaryColor, width: 2), // Neon laser line
         ),
       ),
       child: Center(
         child: RichText(
           text: TextSpan(
-            style: const TextStyle(
-              color: AppTheme.colorTextLight,
-              fontSize: 14,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppTheme.textSecondary,
+                ),
             children: [
               TextSpan(text: '© ${DateTime.now().year} '),
               const TextSpan(
                 text: 'StajForum',
                 style: TextStyle(
-                  color: AppTheme.colorAccent,
-                  fontWeight: FontWeight.w500,
+                  color: AppTheme.primaryColor,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               const TextSpan(text: '. Tüm hakları saklıdır.'),

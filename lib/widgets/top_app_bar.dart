@@ -16,17 +16,16 @@ class TopAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
             'assets/staj-forum-logo-no-background.png',
             height: 45,
             errorBuilder: (context, error, stackTrace) {
-              return const Icon(Icons.forum, size: 45, color: AppTheme.colorSecondaryDark);
+              return const Icon(Icons.forum, size: 45, color: AppTheme.primaryColor);
             },
           ),
           const SizedBox(width: 12),
-          const Text(
+          Text(
             'StajForum',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.colorSecondaryDark,
-            ),
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.textPrimary, // White title
+                ),
           ),
         ],
       ),
@@ -45,15 +44,18 @@ class TopAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget _buildNavButton(BuildContext context, String title, String route) {
+    // Highlight current route could be added here later
     return TextButton(
       onPressed: () => Navigator.pushNamed(context, route),
+      style: TextButton.styleFrom(
+        foregroundColor: AppTheme.primaryColor,
+      ),
       child: Text(
         title,
-        style: const TextStyle(
-          color: AppTheme.colorSecondary,
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
-        ),
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: AppTheme.textPrimary,
+              fontWeight: FontWeight.w600,
+            ),
       ),
     );
   }

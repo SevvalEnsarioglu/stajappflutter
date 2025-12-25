@@ -19,61 +19,92 @@ class TopicCardWidget extends StatelessWidget {
         ? '${topic.content.substring(0, 200)}...'
         : topic.content;
 
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          color: AppTheme.colorBgTertiary,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                const Icon(Icons.person, color: AppTheme.colorSecondary, size: 18),
-                const SizedBox(width: 8),
-                Text(
-                  topic.authorName,
-                  style: const TextStyle(
-                    color: AppTheme.colorSecondary,
-                    fontWeight: FontWeight.w600,
+    return Card(
+      // CardTheme is already defined in theme.dart
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        color: AppTheme.primaryColor.withOpacity(0.1),
+                        shape: BoxShape.circle),
+                    child: const Icon(Icons.person,
+                        color: AppTheme.primaryColor, size: 16),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Text(
-              topic.title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.colorTextPrimary,
+                  const SizedBox(width: 12),
+                  Text(
+                    topic.authorName,
+                    style: const TextStyle(
+                      color: AppTheme.primaryColor, // Neon Cyan for Author
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    _formatDate(topic.createdAt),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppTheme.textSecondary,
+                        ),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              description,
-              style: const TextStyle(
-                fontSize: 15,
-                height: 1.6,
-                color: AppTheme.colorTextPrimary,
+              const SizedBox(height: 16),
+              Text(
+                topic.title,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: AppTheme.textPrimary,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
-            ),
-          ],
+              const SizedBox(height: 12),
+              Text(
+                description,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppTheme.textSecondary, // Grey for body text
+                      height: 1.6,
+                    ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  const Icon(Icons.comment, size: 16, color: AppTheme.textSecondary),
+                  const SizedBox(width: 6),
+                  Text(
+                    '${topic.replyCount} Yanıt',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppTheme.textSecondary,
+                        ),
+                  ),
+                  const SizedBox(width: 16),
+                  const Icon(Icons.remove_red_eye, size: 16, color: AppTheme.textSecondary),
+                  const SizedBox(width: 6),
+                  Text(
+                    '${topic.viewCount} Görüntüleme',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppTheme.textSecondary,
+                        ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  String _formatDate(DateTime? date) {
+    if (date == null) return "Unknown Date";
+    return "${date.day}/${date.month}/${date.year}";
   }
 }
 

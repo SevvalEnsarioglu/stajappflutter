@@ -15,7 +15,7 @@ class AnasayfaPage extends StatelessWidget {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
               child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 900),
@@ -25,46 +25,49 @@ class AnasayfaPage extends StatelessWidget {
                       // Hero Section
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(24),
+                        padding: const EdgeInsets.all(32),
                         decoration: BoxDecoration(
-                          color: AppTheme.colorBgTertiary,
-                          borderRadius: BorderRadius.circular(10),
+                          color: AppTheme.surfaceDark,
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(
+                            color: AppTheme.primaryColor.withOpacity(0.3),
+                            width: 1,
+                          ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.03),
-                              blurRadius: 8,
-                              offset: const Offset(0, 2),
+                              color: AppTheme.primaryColor.withOpacity(0.1),
+                              blurRadius: 20,
+                              offset: const Offset(0, 4),
                             ),
                           ],
                         ),
-                        child: const Column(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'StajForum\'a Hoş Geldiniz!',
-                              style: TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                                color: AppTheme.colorTextPrimary,
-                              ),
+                              'StajForum\'a Hoş Geldiniz! 🚀',
+                              style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppTheme.textPrimary,
+                                  ),
                             ),
-                            SizedBox(height: 16),
+                            const SizedBox(height: 16),
                             Text(
                               'StajForum; öğrencilerin staj süreçlerinde bilgi paylaşımı yapabileceği, deneyimlerini aktarabileceği ve yeni fırsatlara ulaşabileceği bir topluluk platformudur.',
-                              style: TextStyle(
-                                fontSize: 16,
-                                height: 1.7,
-                                color: AppTheme.colorTextPrimary,
-                              ),
+                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    color: AppTheme.textSecondary,
+                                    height: 1.6,
+                                  ),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 32),
 
                       // Neler Sunuyoruz
                       _buildInfoSection(
-                        title: '🚀 Neler Sunuyoruz?',
+                        context,
+                        title: 'Neler Sunuyoruz?',
                         content: const [
                           '🔍 Staj yeri incelemeleri ve yorumlar',
                           '💬 Forum ortamında bilgi paylaşımı',
@@ -75,7 +78,8 @@ class AnasayfaPage extends StatelessWidget {
 
                       // Amacımız
                       _buildInfoSection(
-                        title: '💡 Amacımız',
+                        context,
+                        title: 'Amacımız 💡',
                         isListStyle: false,
                         description:
                             'StajForum, üniversite öğrencileri için staj sürecini daha şeffaf, erişilebilir ve öğretici hale getirmeyi amaçlar. Öğrenciler kendi staj deneyimlerini paylaşabilir, firmalar hakkında yorum yapabilir ve staj başvurusu yapmadan önce gerçek kullanıcı deneyimlerinden faydalanabilir.',
@@ -83,7 +87,8 @@ class AnasayfaPage extends StatelessWidget {
 
                       // Kimler Kullanabilir
                       _buildInfoSection(
-                        title: '👥 Kimler Kullanabilir?',
+                        context,
+                        title: 'Kimler Kullanabilir? 👥',
                         isListStyle: false,
                         description:
                             'Platform, öncelikle üniversite öğrencileri, yeni mezunlar ve stajyer arayan firmalar için tasarlanmıştır. Kullanıcılar kayıt olmadan, sadece Ad-Soyad girerek forumda yorum yapabilir ve topluluğa katkı sağlayabilir.',
@@ -91,7 +96,8 @@ class AnasayfaPage extends StatelessWidget {
 
                       // Topluluk Gücü
                       _buildInfoSection(
-                        title: '🌍 Topluluk Gücü',
+                        context,
+                        title: 'Topluluk Gücü 🌍',
                         isListStyle: false,
                         description:
                             'Her öğrenci kendi deneyimini paylaşarak başkalarının yolunu aydınlatır. StajForum, dayanışma kültürünü dijital ortama taşıyarak bilgiye erişimi kolaylaştırır.',
@@ -111,7 +117,8 @@ class AnasayfaPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoSection({
+  Widget _buildInfoSection(
+    BuildContext context, {
     required String title,
     List<String>? content,
     String? description,
@@ -120,64 +127,67 @@ class AnasayfaPage extends StatelessWidget {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.only(bottom: 24),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: AppTheme.colorBgTertiary,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        color: AppTheme.surfaceDark.withOpacity(0.6), // Slightly transparent for glass feel
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: AppTheme.surfaceLight,
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.colorPrimary,
-            ),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: AppTheme.primaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           if (isListStyle && content != null)
-            ...content.map((item) => _buildFeatureItem(item))
+            ...content.map((item) => _buildFeatureItem(context, item))
           else if (description != null)
             Text(
               description,
-              style: const TextStyle(
-                fontSize: 16,
-                height: 1.7,
-                color: AppTheme.colorTextPrimary,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AppTheme.textSecondary,
+                    height: 1.6,
+                  ),
             ),
         ],
       ),
     );
   }
 
-  Widget _buildFeatureItem(String text) {
+  Widget _buildFeatureItem(BuildContext context, String text) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
-        color: AppTheme.colorPrimaryLight,
-        borderRadius: BorderRadius.circular(6),
-        border: const Border(
-          left: BorderSide(color: AppTheme.colorBorderAccent, width: 5),
+        color: AppTheme.backgroundDark,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppTheme.primaryColor.withOpacity(0.2), // Subtle neon border
+          width: 1,
         ),
       ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
-          color: AppTheme.colorTextPrimary,
-        ),
+      child: Row(
+        children: [
+          const Icon(Icons.check_circle_outline, color: AppTheme.secondaryColor, size: 20),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppTheme.textPrimary,
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
+          ),
+        ],
       ),
     );
   }

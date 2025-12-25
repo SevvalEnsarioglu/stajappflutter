@@ -7,20 +7,29 @@ class CommonDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: AppTheme.backgroundDark,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: AppTheme.colorPrimary,
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              color: AppTheme.surfaceDark,
+              border: Border(bottom: BorderSide(color: AppTheme.primaryColor)),
             ),
-            child: Text(
-              'StajForum',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const Icon(Icons.forum, color: AppTheme.primaryColor, size: 48),
+                const SizedBox(height: 12),
+                Text(
+                  'StajForum',
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: AppTheme.textPrimary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
             ),
           ),
           _buildDrawerItem(context, 'Anasayfa', '/anasayfa', Icons.home),
@@ -40,8 +49,11 @@ class CommonDrawer extends StatelessWidget {
     IconData icon,
   ) {
     return ListTile(
-      leading: Icon(icon, color: AppTheme.colorSecondary),
-      title: Text(title),
+      leading: Icon(icon, color: AppTheme.primaryColor),
+      title: Text(
+        title,
+        style: TextStyle(color: AppTheme.textPrimary),
+      ),
       onTap: () {
         Navigator.pop(context);
         Navigator.pushNamed(context, route);

@@ -135,18 +135,26 @@ class _ChatStjPageState extends State<ChatStjPage> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppTheme.colorBgTertiary,
+                        color: AppTheme.surfaceDark,
                         borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppTheme.primaryColor.withOpacity(0.3)),
                       ),
                       child: Row(
-                        children: const [
-                          Icon(Icons.forum, color: AppTheme.colorSecondary),
-                          SizedBox(width: 12),
-                          Text(
+                        children: [
+                          Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppTheme.surfaceLight,
+                              ),
+                              child: const Icon(Icons.forum, color: AppTheme.primaryColor)),
+                          const SizedBox(width: 12),
+                          const Text(
                             'ChatSTJ',
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
+                              color: AppTheme.textPrimary,
                             ),
                           ),
                         ],
@@ -157,9 +165,9 @@ class _ChatStjPageState extends State<ChatStjPage> {
                       child: Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppTheme.surfaceDark.withOpacity(0.5),
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: AppTheme.colorBorderLight),
+                          border: Border.all(color: AppTheme.surfaceLight),
                         ),
                         child: Column(
                           children: [
@@ -184,8 +192,10 @@ class _ChatStjPageState extends State<ChatStjPage> {
                                     controller: _messageController,
                                     minLines: 1,
                                     maxLines: 4,
+                                    style: const TextStyle(color: AppTheme.textPrimary),
                                     decoration: const InputDecoration(
                                       hintText: 'Mesajınızı yazın...',
+                                      hintStyle: TextStyle(color: AppTheme.textSecondary),
                                       border: OutlineInputBorder(),
                                     ),
                                     onSubmitted: (_) => _handleSendMessage(),
@@ -194,7 +204,11 @@ class _ChatStjPageState extends State<ChatStjPage> {
                                 const SizedBox(width: 12),
                                 ElevatedButton(
                                   onPressed: _handleSendMessage,
-                                  child: const Icon(Icons.send),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppTheme.secondaryColor,
+                                    padding: const EdgeInsets.all(16),
+                                  ),
+                                  child: const Icon(Icons.send, color: Colors.white),
                                 ),
                               ],
                             ),
@@ -221,8 +235,9 @@ class _ChatStjPageState extends State<ChatStjPage> {
         margin: const EdgeInsets.symmetric(vertical: 6),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: AppTheme.colorPrimaryLight,
+          color: AppTheme.surfaceLight,
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppTheme.primaryColor.withOpacity(0.2)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -230,10 +245,10 @@ class _ChatStjPageState extends State<ChatStjPage> {
             SizedBox(
               width: 16,
               height: 16,
-              child: CircularProgressIndicator(strokeWidth: 2),
+              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.primaryColor),
             ),
             SizedBox(width: 8),
-            Text('Yazıyor...'),
+            Text('Yazıyor...', style: TextStyle(color: AppTheme.textSecondary)),
           ],
         ),
       ),
@@ -251,9 +266,11 @@ class _ChatBubble extends StatelessWidget {
     final alignment =
         message.isUser ? Alignment.centerRight : Alignment.centerLeft;
     final backgroundColor =
-        message.isUser ? AppTheme.colorSecondary : AppTheme.colorPrimaryLight;
+        message.isUser ? AppTheme.primaryColor.withOpacity(0.2) : AppTheme.surfaceLight;
+    final borderColor =
+        message.isUser ? AppTheme.primaryColor : Colors.transparent;
     final textColor =
-        message.isUser ? AppTheme.colorTextLight : AppTheme.colorTextPrimary;
+        message.isUser ? AppTheme.textPrimary : AppTheme.textPrimary;
 
     return Align(
       alignment: alignment,
@@ -263,6 +280,7 @@ class _ChatBubble extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: borderColor),
         ),
         child: Text(
           message.text,

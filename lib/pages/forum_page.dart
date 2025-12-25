@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import '../config/api_config.dart';
+import '../config/theme.dart';
 import '../models/contact.dart';
 import '../models/topic.dart';
 import '../services/forum_service.dart';
@@ -72,6 +73,10 @@ class _ForumPageState extends State<ForumPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: AppTheme.surfaceDark,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
       builder: (sheetContext) {
         return Padding(
           padding: EdgeInsets.only(
@@ -88,20 +93,20 @@ class _ForumPageState extends State<ForumPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Yeni Topic Oluştur',
-                        style: TextStyle(
-                          fontSize: 20,
+                       Text(
+                        'Yeni Konu Oluştur',
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          color: AppTheme.textPrimary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       IconButton(
                         onPressed: () => Navigator.of(sheetContext).pop(),
-                        icon: const Icon(Icons.close),
+                        icon: const Icon(Icons.close, color: AppTheme.textSecondary),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
                   _buildTextField(
                     controller: _authorController,
                     label: 'Ad Soyad',
@@ -151,6 +156,9 @@ class _ForumPageState extends State<ForumPage> {
                     children: [
                       TextButton(
                         onPressed: () => Navigator.of(sheetContext).pop(),
+                        style: TextButton.styleFrom(
+                          foregroundColor: AppTheme.textSecondary,
+                        ),
                         child: const Text('İptal'),
                       ),
                       const SizedBox(width: 12),
@@ -201,7 +209,9 @@ class _ForumPageState extends State<ForumPage> {
         SnackBar(
           content: Text(
             _describeError(error),
+            style: const TextStyle(color: Colors.white),
           ),
+          backgroundColor: AppTheme.errorColor,
         ),
       );
     } finally {
@@ -222,9 +232,9 @@ class _ForumPageState extends State<ForumPage> {
     return TextFormField(
       controller: controller,
       maxLines: maxLines,
+      style: const TextStyle(color: AppTheme.textPrimary),
       decoration: InputDecoration(
         labelText: label,
-        border: const OutlineInputBorder(),
       ),
       validator: validator,
     );
@@ -241,9 +251,11 @@ class _ForumPageState extends State<ForumPage> {
           Expanded(
             child: RefreshIndicator(
               onRefresh: _fetchTopics,
+              color: AppTheme.primaryColor,
+              backgroundColor: AppTheme.surfaceDark,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(32),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                 child: Center(
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 900),
@@ -253,21 +265,27 @@ class _ForumPageState extends State<ForumPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              'Forum',
-                              style: TextStyle(
-                                fontSize: 32,
+                            Text(
+                              'Forum 💬',
+                              style: Theme.of(context).textTheme.displaySmall?.copyWith(
                                 fontWeight: FontWeight.bold,
+                                color: AppTheme.textPrimary,
                               ),
                             ),
                             ElevatedButton.icon(
                               onPressed: _openCreateTopicSheet,
                               icon: const Icon(Icons.add),
-                              label: const Text('Topic Oluştur'),
+                              label: const Text('Konu Oluştur'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppTheme.primaryColor,
+                                foregroundColor: Colors.black,
+                                elevation: 8,
+                                shadowColor: AppTheme.primaryColor.withOpacity(0.5),
+                              ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 32),
                         if (_isLoading)
                           const Center(child: CircularProgressIndicator())
                         else if (_errorMessage != null)
@@ -275,19 +293,30 @@ class _ForumPageState extends State<ForumPage> {
                             width: double.infinity,
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Colors.red.shade50,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: Colors.red.shade200),
+                              color: AppTheme.errorColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: AppTheme.errorColor),
                             ),
                             child: Text(
                               _errorMessage!,
-                              style: const TextStyle(color: Colors.red),
+                              style: const TextStyle(color: AppTheme.errorColor),
                             ),
                           )
                         else if (_topics.isEmpty)
-                          const Text(
-                            'Henüz topic bulunmamaktadır.',
-                            style: TextStyle(fontSize: 16),
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(40.0),
+                              child: Column(
+                                children: [
+                                  const Icon(Icons.inbox, size: 60, color: AppTheme.textSecondary),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    'Henüz konu bulunmamaktadır.',
+                                    style: TextStyle(fontSize: 18, color: AppTheme.textSecondary),
+                                  ),
+                                ],
+                              ),
+                            ),
                           )
                         else
                           Column(
@@ -342,4 +371,3 @@ class _ForumPageState extends State<ForumPage> {
     return 'Beklenmeyen bir hata oluştu. Detay: $error';
   }
 }
-
