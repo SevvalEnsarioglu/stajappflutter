@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../models/contact.dart';
 import '../models/reply.dart';
+import '../models/reply_request.dart';
 import '../models/topic.dart';
 import 'api_client.dart';
 
@@ -56,6 +57,14 @@ class ForumService {
       },
     );
     return ReplyListResponse.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  Future<Reply> createReply(int topicId, ReplyRequest request) async {
+    final response = await _client.post(
+      '/forum/topics/$topicId/replies',
+      data: request.toJson(),
+    );
+    return Reply.fromJson(response.data as Map<String, dynamic>);
   }
 }
 

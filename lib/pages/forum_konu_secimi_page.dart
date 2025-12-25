@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../config/theme.dart';
 import '../models/reply.dart';
+import '../models/reply_request.dart';
 import '../models/topic.dart';
 import '../services/forum_service.dart';
 import '../widgets/bottom_bar.dart';
@@ -100,10 +101,10 @@ class _ForumKonuSecimiPageState extends State<ForumKonuSecimiPage> {
                                     color: AppTheme.surfaceDark,
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
-                                        color: AppTheme.primaryColor.withOpacity(0.3)),
+                                        color: AppTheme.primaryColor.withValues(alpha: 0.3)),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppTheme.primaryColor.withOpacity(0.05),
+                                        color: AppTheme.primaryColor.withValues(alpha: 0.05),
                                         blurRadius: 20,
                                         offset: const Offset(0, 4),
                                       ),
@@ -192,20 +193,33 @@ class _ForumKonuSecimiPageState extends State<ForumKonuSecimiPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            'Yanıtlar',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleLarge
-                                                ?.copyWith(
-                                                  color: AppTheme.primaryColor,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Yanıtlar',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleLarge
+                                                    ?.copyWith(
+                                                      color: AppTheme.primaryColor,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                '(${_replies.length})',
+                                                style: const TextStyle(
+                                                    color: AppTheme.textSecondary),
+                                              ),
+                                            ],
                                           ),
-                                          Text(
-                                            '${_replies.length} yanıt',
-                                            style: const TextStyle(
-                                                color: AppTheme.textSecondary),
+                                          TextButton.icon(
+                                            onPressed: () => _showAddReplySheet(),
+                                            icon: const Icon(Icons.add_comment, size: 18),
+                                            label: const Text("Yanıtla"),
+                                            style: TextButton.styleFrom(
+                                              foregroundColor: AppTheme.primaryColor,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -216,7 +230,7 @@ class _ForumKonuSecimiPageState extends State<ForumKonuSecimiPage> {
                                           padding: const EdgeInsets.all(16),
                                           decoration: BoxDecoration(
                                             color: AppTheme.backgroundDark
-                                                .withOpacity(0.5),
+                                                .withValues(alpha: 0.5),
                                             borderRadius: BorderRadius.circular(12),
                                             border: Border.all(
                                                 color: AppTheme.surfaceLight),
@@ -245,7 +259,137 @@ class _ForumKonuSecimiPageState extends State<ForumKonuSecimiPage> {
           const BottomBarWidget(),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showAddReplySheet(),
+        backgroundColor: AppTheme.primaryColor,
+        child: const Icon(Icons.comment, color: Colors.black),
+      ),
       drawer: isMobile ? const CommonDrawer() : null,
+    );
+  }
+
+  void _showAddReplySheet() {
+    final TextEditingController nameController = TextEditingController(text: " ");
+    final TextEditingController contentController = TextEditingController();
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            top: 24,
+            left: 24,
+            right: 24,
+          ),
+          decoration: const BoxDecoration(
+            color: AppTheme.surfaceDark,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Yanıt Gönder',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(color: AppTheme.textPrimary),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: nameController,
+                style: const TextStyle(color: AppTheme.textPrimary),
+                decoration: const InputDecoration(
+                  labelText: 'Ad Soyad',
+                  labelStyle: TextStyle(color: AppTheme.textSecondary),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppTheme.surfaceLight),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppTheme.primaryColor),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: contentController,
+                maxLines: 4,
+                style: const TextStyle(color: AppTheme.textPrimary),
+                decoration: const InputDecoration(
+                  labelText: 'Yanıtınız',
+                  hintText: 'Buraya yazın...',
+                  labelStyle: TextStyle(color: AppTheme.textSecondary),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppTheme.surfaceLight),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppTheme.primaryColor),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (contentController.text.trim().isEmpty) return;
+
+                    try {
+                      // Show loading indicator on button or simple wait
+                      // For now, close sheet and show loading on main screen reload
+                      
+                      final request = ReplyRequest(
+                        content: contentController.text.trim(),
+                        authorName: nameController.text.trim().isNotEmpty
+                            ? nameController.text.trim()
+                            : "Misafir",
+                      );
+
+                      if (widget.id.isEmpty) return;
+                      final topicId = int.tryParse(widget.id);
+                      if (topicId == null) return;
+
+                      // Call backend
+                      await _forumService.createReply(topicId, request);
+                      
+                      if (context.mounted) {
+                         Navigator.pop(context); // Close sheet
+                         _fetchData(); // Refresh list to show new reply
+                         
+                         ScaffoldMessenger.of(context).showSnackBar(
+                           const SnackBar(
+                             content: Text('Yanıtınız gönderildi!'),
+                             backgroundColor: AppTheme.successColor,
+                           ),
+                         );
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Hata: $e'),
+                            backgroundColor: AppTheme.errorColor,
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primaryColor,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                  child: const Text('GÖNDER', style: TextStyle(color: Colors.black)),
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
+          ),
+        );
+      },
     );
   }
 
