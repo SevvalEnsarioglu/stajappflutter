@@ -1,50 +1,47 @@
-# Staj App Flutter
+# Staj Forum Mobil Uygulamasi
 
-StajForum web uygulamasının Flutter ile geliştirilen eşlenik sürümü. React/Vite tabanlı `staj-forum-web` ile aynı ekran akışlarını ve backend API entegrasyonunu içerir.
+Staj Forum platformunun Flutter ile gelistirilmis mobil uygulamasidir. Web platformu ile es zamanli calisarak stajyerlere mobil cihazlarda forum, sohbet ve analiz hizmetleri sunar.
 
-## Özellikler
+## Ozellikler
 
-- Anasayfa, Forum, ChatSTJ, Hakkında ve İletişim sayfaları
-- Forum topic listeleme ve oluşturma (backend entegrasyonlu)
-- İletişim formu (backend entegrasyonlu)
-- Responsive AppBar / Drawer / Footer bileşenleri
-- Dio tabanlı merkezi API istemcisi
+*   **Forum Goruntuleme:** Forum konularini listeleme ve detaylarini inceleme.
+*   **AI Sohbet Asistani (ChatStj):** Google Gemini entegrasyonu ile kullanicilarin staj hakkindaki sorularini yanitlayan interaktif asistan.
+*   **Mobil CV Analizi:** Cihazdan PDF formatinda CV yukleme, metin cikartma ve yapay zeka destekli detayli analiz.
+*   **Modern Arayuz:** Ozel olarak tasarlanmis koyu tema (Dark Mode) ve neon renk paleti.
 
-## Backend Bağlantısı
+## Teknolojiler ve Paketler
 
-Varsayılan API taban adresi `lib/config/api_config.dart` üzerinden belirlenir:
+*   **Framework:** Flutter
+*   **Dil:** Dart
+*   **HTTP Istekleri:** Dio
+*   **Dosya Secimi:** file_picker
+*   **PDF Isleme:** syncfusion_flutter_pdf
+*   **Yazi Tipleri:** google_fonts
 
-Öncelik sırası:
-1. `flutter run --dart-define API_BASE_URL=https://api.ornek.com/api`
-2. Flutter Web'de bulunduğunuz host + `:5236/api`
-3. Android emülatörleri için `http://10.0.2.2:5236/api`
-4. Diğer platformlar için `http://localhost:5236/api`
+## Kurulum ve Calistirma
 
-Yerel geliştirme için:
+Uygulamayi calistirmak icin Flutter SDK'nin kurulu oldugundan emin olun.
 
-```bash
-# Backend'i başlatın
-cd staj-forum-backend
-dotnet run
+1.  **Bagimliliklari Yukleyin:**
+    Proje dizininde asagidaki komutu calistirin:
+    ```bash
+    flutter pub get
+    ```
 
-# Flutter Web
-cd stajappflutter
-flutter run -d chrome --web-hostname localhost --web-port 5174
+2.  **Uygulamayi Baslatin:**
+    Bir emulator veya fiziksel cihaz bagladiktan sonra:
+    ```bash
+    flutter run
+    ```
 
-# Farklı bir API adresi kullanmak isterseniz
-flutter run -d chrome --dart-define API_BASE_URL=https://demo.stajforum.com/api
-```
+## Proje Yapisi
 
-Android/iOS cihazlarında kendi makinenize erişebilmek için gerekli network/security ayarlarını `FRONTEND_BACKEND_BAGLANTI_REHBERI.txt` dokümanından kontrol edin.
+*   `lib/config`: Uygulama genelindeki ayarlar (API URL'leri, Tema dosyalari).
+*   `lib/models`: Veri modelleri ve JSON donusum siniflari.
+*   `lib/pages`: Uygulama ekranlari (Anasayfa, Chat, CV Analiz vb.).
+*   `lib/services`: Backend API ile iletisimi saglayan servis katmani.
+*   `lib/widgets`: Tekrar kullanilabilir arayuz bilesenleri (App Bar, Drawer vb.).
 
-## Test
+## Yapilandirma
 
-```bash
-flutter test
-```
-
-## Notlar
-
-- Backend API'si çalışır durumda değilse forum ve iletişim sayfaları bağlantı hatası gösterecektir.
-- Hata mesajları, kullanılan API adresini de belirterek daha kolay debug edilmesine yardımcı olur.
-- Production dağıtımlarında mutlaka gerçek API URL'sini `API_BASE_URL` ile geçin. 
+Backend API adresi `lib/config/api_config.dart` dosyasi icerisinde tanimlanmistir. Yerel testler icin bu adresi kendi sunucu adresinizle guncellemeniz gerekebilir.
