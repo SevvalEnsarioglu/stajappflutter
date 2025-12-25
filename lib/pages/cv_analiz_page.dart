@@ -4,6 +4,13 @@ import '../config/theme.dart';
 import '../widgets/top_app_bar.dart';
 import '../widgets/common_drawer.dart';
 
+import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:file_picker/file_picker.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
+
+// ... (keep libraries)
+
 class CVAnalizPage extends StatefulWidget {
   const CVAnalizPage({super.key});
 
@@ -16,6 +23,53 @@ class _CVAnalizPageState extends State<CVAnalizPage> {
   final ChatService _chatService = ChatService();
   String? _result;
   bool _isLoading = false;
+
+  Future<void> _handlePdfUpload() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+
+      if (result != null) {
+        setState(() {
+          _isLoading = true;
+          _cvController.text = "PDF Okunuyor...";
+        });
+
+        String extractedText = '';
+        if (kIsWeb) {
+           // Web
+           final bytes = result.files.single.bytes!;
+           final PdfDocument document = PdfDocument(inputBytes: bytes);
+           extractedText = PdfTextExtractor(document).extractText();
+           document.dispose();
+        } else {
+           // Mobile/Desktop
+           final path = result.files.single.path!;
+           final File file = File(path);
+           final bytes = await file.readAsBytes();
+           final PdfDocument document = PdfDocument(inputBytes: bytes);
+           extractedText = PdfTextExtractor(document).extractText();
+           document.dispose();
+        }
+
+        setState(() {
+            _cvController.text = extractedText;
+            _isLoading = false;
+        });
+      }
+    } catch (e) {
+        setState(() {
+            _isLoading = false;
+            _cvController.text = "";
+        });
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Dosya okuma hatası: $e'), backgroundColor: AppTheme.errorColor),
+        );
+    }
+  }
 
   Future<void> _handleAnalyze() async {
     final text = _cvController.text.trim();
@@ -63,7 +117,7 @@ class _CVAnalizPageState extends State<CVAnalizPage> {
               children: [
                 const SizedBox(height: 20),
                 Text(
-                  'AI CV Analizi 🚀',
+                  'AI CV Analizi',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         color: AppTheme.primaryColor,
                         fontWeight: FontWeight.bold,
@@ -71,54 +125,63 @@ class _CVAnalizPageState extends State<CVAnalizPage> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
+                const SizedBox(height: 16),
                 const Text(
-                  'CV metnini aşağıya yapıştır, yapay zeka senin için incelesin!',
+                  "CV'nizi PDF formatında yükleyin, yapay zeka sizin için analiz etsin.",
                   textAlign: TextAlign.center,
                   style: TextStyle(color: AppTheme.textSecondary, fontSize: 16),
                 ),
-                const SizedBox(height: 32),
-                TextField(
-                  controller: _cvController,
-                  maxLines: 10,
-                  style: const TextStyle(color: AppTheme.textPrimary),
-                  decoration: InputDecoration(
-                    hintText: 'CV metnini buraya yapıştır...',
-                    hintStyle: const TextStyle(color: AppTheme.textSecondary),
-                    filled: true,
-                    fillColor: AppTheme.surfaceLight,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppTheme.primaryColor),
+                
+                 const SizedBox(height: 24),
+                 Center(
+                   child: ElevatedButton.icon(
+                      onPressed: _isLoading ? null : _handlePdfUpload,
+                      icon: const Icon(Icons.upload_file, color: Colors.white),
+                      label: const Text('PDF CV Yükle'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.primaryColor,
+                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                   ),
+                 ),
+
+                if (_cvController.text.isNotEmpty && !_isLoading && !_cvController.text.startsWith('PDF')) ...[
+                     const SizedBox(height: 16),
+                     const Center(
+                         child: Row(
+                             mainAxisSize: MainAxisSize.min,
+                             children: [
+                                 Icon(Icons.check_circle, color: Colors.green),
+                                 SizedBox(width: 8),
+                                 Text("PDF Başarıyla Okundu", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                             ],
+                         ),
+                     ),
+                     const SizedBox(height: 24),
+                     ElevatedButton.icon(
+                      onPressed: _isLoading ? null : _handleAnalyze,
+                      icon: _isLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                  strokeWidth: 2, color: Colors.white),
+                            )
+                          : const Icon(Icons.analytics_outlined, color: Colors.white),
+                      label: Text(_isLoading ? 'Analiz Ediliyor...' : 'Analizi Başlat'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: AppTheme.secondaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        textStyle:
+                            const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide:
-                          BorderSide(color: AppTheme.primaryColor.withOpacity(0.3)),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton.icon(
-                  onPressed: _isLoading ? null : _handleAnalyze,
-                  icon: _isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                              strokeWidth: 2, color: Colors.white),
-                        )
-                      : const Icon(Icons.analytics_outlined, color: Colors.white),
-                  label: Text(_isLoading ? 'Analiz Ediliyor...' : 'Analiz Et'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: AppTheme.secondaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    textStyle:
-                        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
+                ],
                 if (_result != null) ...[
                   const SizedBox(height: 32),
                   Container(
