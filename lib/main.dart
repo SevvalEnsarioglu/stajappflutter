@@ -6,6 +6,7 @@ import 'pages/forum_page.dart';
 import 'pages/forum_konu_secimi_page.dart';
 import 'pages/hakkinda_page.dart';
 import 'pages/iletisim_page.dart';
+import 'pages/cv_analiz_page.dart';
 
 void main() {
   runApp(const StajForumApp());
@@ -26,6 +27,7 @@ class StajForumApp extends StatelessWidget {
         '/anasayfa': (context) => const AnasayfaPage(),
         '/forum': (context) => const ForumPage(),
         '/chatstj': (context) => const ChatStjPage(),
+        '/cv-analiz': (context) => const CVAnalizPage(),
         '/hakkinda': (context) => const HakkindaPage(),
         '/iletisim': (context) => const IletisimPage(),
       },

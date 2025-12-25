@@ -35,6 +35,7 @@ class TopAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           _buildNavButton(context, 'Anasayfa', '/anasayfa'),
           _buildNavButton(context, 'Forum', '/forum'),
           _buildNavButton(context, 'ChatSTJ', '/chatstj'),
+          _buildNavButton(context, 'CV Analiz', '/cv-analiz'),
           _buildNavButton(context, 'Hakkında', '/hakkinda'),
           _buildNavButton(context, 'İletişim', '/iletisim'),
           const SizedBox(width: 16),
