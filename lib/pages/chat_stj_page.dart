@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../services/chat_service.dart';
 import '../config/theme.dart';
 import '../widgets/bottom_bar.dart';
 import '../widgets/common_drawer.dart';
@@ -60,7 +61,12 @@ class _ChatStjPageState extends State<ChatStjPage> {
     });
   }
 
-  void _handleSendMessage() {
+  final ChatService _chatService = ChatService();
+  String? _conversationId;
+
+  // ... (dispose and _scrollToBottom methods remain the same)
+
+  Future<void> _handleSendMessage() async {
     final text = _messageController.text.trim();
     if (text.isEmpty || _isBotTyping) return;
 
@@ -77,42 +83,50 @@ class _ChatStjPageState extends State<ChatStjPage> {
       _isBotTyping = true;
     });
     _scrollToBottom();
-    _simulateBotResponse(text);
-  }
 
-  Future<void> _simulateBotResponse(String userText) async {
-    await Future.delayed(const Duration(seconds: 1));
-    final response = ChatMessage(
-      id: (DateTime.now().millisecondsSinceEpoch + 1).toString(),
-      text: _generateMockResponse(userText),
-      isUser: false,
-      timestamp: DateTime.now(),
-    );
+    try {
+      final response = await _chatService.sendMessage(text, conversationId: _conversationId);
+      
+      if (_conversationId == null && response.conversationId.isNotEmpty) {
+        _conversationId = response.conversationId;
+      }
 
-    if (!mounted) return;
-    setState(() {
-      _messages.add(response);
-      _isBotTyping = false;
-    });
-    _scrollToBottom();
-  }
+      final botMessage = ChatMessage(
+        id: (DateTime.now().millisecondsSinceEpoch + 1).toString(),
+        text: response.response,
+        isUser: false,
+        timestamp: DateTime.now(),
+      );
 
-  String _generateMockResponse(String userMessage) {
-    final lowerMessage = userMessage.toLowerCase();
-
-    if (lowerMessage.contains('başvuru') || lowerMessage.contains('nasıl')) {
-      return 'Staj başvurusu yapmak için şirketlerin kariyer sayfalarını ziyaret edebilir veya LinkedIn üzerinden başvuru yapabilirsiniz. CV\'nizi güncel tutmanız ve ilgili deneyimlerinizi vurgulamanız önemlidir.';
-    } else if (lowerMessage.contains('cv') ||
-        lowerMessage.contains('özgeçmiş')) {
-      return 'CV\'nizde staj için önemli olan bilgiler: Eğitim bilgileri, teknik beceriler, projeler, gönüllü çalışmalar ve referanslar. CV\'nizi 1-2 sayfa tutmaya özen gösterin.';
-    } else if (lowerMessage.contains('mülakat') ||
-        lowerMessage.contains('görüşme')) {
-      return 'Staj mülakatında genellikle teknik sorular, proje deneyimleriniz ve şirket hakkında sorular sorulur. Kendinizi rahatça ifade edebilmek ve şirketi araştırmış olmak önemlidir.';
-    } else if (lowerMessage.contains('stajyer') ||
-        lowerMessage.contains('ne yapar')) {
-      return 'Stajyerler genellikle gerçek projelerde çalışır, mentorluk alır ve ekip içinde deneyim kazanır. Aktif olmak, soru sormak ve öğrenmeye açık olmak başarılı bir staj için önemlidir.';
-    } else {
-      return 'Staj sürecinizde başarılar dilerim! Staj başvurusu, CV hazırlama, mülakat teknikleri veya stajyerlik deneyimi hakkında daha fazla bilgi almak isterseniz sorabilirsiniz.';
+      if (!mounted) return;
+      setState(() {
+        _messages.add(botMessage);
+      });
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Hata: $e'),
+          backgroundColor: AppTheme.errorColor,
+        ),
+      );
+       // Add error message to chat
+      final errorMessage = ChatMessage(
+        id: (DateTime.now().millisecondsSinceEpoch + 1).toString(),
+        text: "Üzgünüm, şu an bağlantı kuramıyorum. Lütfen daha sonra tekrar deneyin.",
+        isUser: false,
+        timestamp: DateTime.now(),
+      );
+      setState(() {
+        _messages.add(errorMessage);
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isBotTyping = false;
+        });
+        _scrollToBottom();
+      }
     }
   }
 
