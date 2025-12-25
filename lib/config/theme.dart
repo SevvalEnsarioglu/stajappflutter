@@ -206,13 +206,29 @@ class AppTheme {
       // Page Transitions
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {
-          TargetPlatform.android: ZoomPageTransitionsBuilder(),
-          TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
-          TargetPlatform.macOS: ZoomPageTransitionsBuilder(),
-          TargetPlatform.windows: ZoomPageTransitionsBuilder(),
-          TargetPlatform.linux: ZoomPageTransitionsBuilder(),
+          TargetPlatform.android: NoAnimationPageTransitionsBuilder(),
+          TargetPlatform.iOS: NoAnimationPageTransitionsBuilder(),
+          TargetPlatform.macOS: NoAnimationPageTransitionsBuilder(),
+          TargetPlatform.windows: NoAnimationPageTransitionsBuilder(),
+          TargetPlatform.linux: NoAnimationPageTransitionsBuilder(),
         },
       ),
     );
+  }
+}
+
+/// A custom page transition builder that disables all animations.
+class NoAnimationPageTransitionsBuilder extends PageTransitionsBuilder {
+  const NoAnimationPageTransitionsBuilder();
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    return child;
   }
 }
