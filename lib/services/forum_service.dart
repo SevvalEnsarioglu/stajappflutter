@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../models/contact.dart';
+import '../models/reply.dart';
 import '../models/topic.dart';
 import 'api_client.dart';
 
@@ -38,6 +39,23 @@ class ForumService {
   Future<Topic> getTopicById(int id) async {
     final response = await _client.get('/forum/topics/$id');
     return Topic.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  Future<ReplyListResponse> getReplies(
+    int topicId, {
+    int page = 1,
+    int pageSize = 20,
+    String sortBy = 'oldest',
+  }) async {
+    final response = await _client.get(
+      '/forum/topics/$topicId/replies',
+      queryParameters: {
+        'page': page,
+        'pageSize': pageSize,
+        'sortBy': sortBy,
+      },
+    );
+    return ReplyListResponse.fromJson(response.data as Map<String, dynamic>);
   }
 }
 
