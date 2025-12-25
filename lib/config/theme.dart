@@ -215,6 +215,37 @@ class AppTheme {
       ),
     );
   }
+
+  // --- Custom Styles for Specific Pages (e.g. CV Analiz) ---
+  
+  static final ButtonStyle cvUploadButtonStyle = ElevatedButton.styleFrom(
+    backgroundColor: primaryColor,
+    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  );
+
+  static final ButtonStyle cvAnalyzeButtonStyle = ElevatedButton.styleFrom(
+    padding: const EdgeInsets.symmetric(vertical: 16),
+    backgroundColor: secondaryColor,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  );
+
+  static final BoxDecoration cvResultContainerDecoration = BoxDecoration(
+    color: surfaceLight,
+    borderRadius: BorderRadius.circular(12),
+    border: Border.all(color: primaryColor),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.2),
+        blurRadius: 10,
+        offset: const Offset(0, 4),
+      ),
+    ],
+  );
 }
 
 /// A custom page transition builder that disables all animations.

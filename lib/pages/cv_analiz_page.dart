@@ -138,12 +138,7 @@ class _CVAnalizPageState extends State<CVAnalizPage> {
                       onPressed: _isLoading ? null : _handlePdfUpload,
                       icon: const Icon(Icons.upload_file, color: Colors.white),
                       label: const Text('PDF CV Yükle'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.primaryColor,
-                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
+                      style: AppTheme.cvUploadButtonStyle,
                    ),
                  ),
 
@@ -171,33 +166,14 @@ class _CVAnalizPageState extends State<CVAnalizPage> {
                             )
                           : const Icon(Icons.analytics_outlined, color: Colors.white),
                       label: Text(_isLoading ? 'Analiz Ediliyor...' : 'Analizi Başlat'),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: AppTheme.secondaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        textStyle:
-                            const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
+                      style: AppTheme.cvAnalyzeButtonStyle,
                     ),
                 ],
                 if (_result != null) ...[
                   const SizedBox(height: 32),
                   Container(
                     padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: AppTheme.surfaceLight,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppTheme.primaryColor),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
+                    decoration: AppTheme.cvResultContainerDecoration,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
