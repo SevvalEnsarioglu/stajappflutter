@@ -14,7 +14,7 @@ class ForumService {
   Future<TopicListResponse> getTopics({
     int page = 1,
     int pageSize = 50,
-    String sortBy = 'newest',
+    String? sortBy, // Changed to nullable String? sortBy
     String? search,
   }) async {
     final response = await _client.get(
@@ -22,7 +22,7 @@ class ForumService {
       queryParameters: {
         'page': page,
         'pageSize': pageSize,
-        'sortBy': sortBy,
+        if (sortBy != null) 'sortBy': sortBy, // Conditionally add sortBy if not null
         if (search != null && search.isNotEmpty) 'search': search,
       },
     );

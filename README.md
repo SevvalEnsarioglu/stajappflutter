@@ -5,6 +5,8 @@ Staj Forum platformunun Flutter ile gelistirilmis mobil uygulamasidir. Web platf
 ## Ozellikler
 
 *   **Forum Goruntuleme:** Forum konularini listeleme ve detaylarini inceleme.
+    *   **Akıllı Sıralama:** Konuları "En Yeni", "En Eski" ve "En Çok Görüntülenen" kriterlerine göre sıralayabilme.
+    *   **Kullanıcı Dostu Arayüz:** AppBar üzerinden kolay erişilebilir sıralama menüsü.
 *   **AI Sohbet Asistani (ChatStj):** Google Gemini entegrasyonu ile kullanicilarin staj hakkindaki sorularini yanitlayan interaktif asistan.
 *   **Mobil CV Analizi:** Cihazdan PDF formatinda CV yukleme, metin cikartma ve yapay zeka destekli detayli analiz.
 *   **Modern Arayuz:** Ozel olarak tasarlanmis koyu tema (Dark Mode) ve neon renk paleti.

@@ -26,6 +26,8 @@ class _ForumPageState extends State<ForumPage> {
   final TextEditingController _contentController = TextEditingController();
   final String _apiBaseUrl = ApiConfig.baseUrl;
 
+  String _sortBy = "newest";
+
   bool _isLoading = false;
   bool _isSubmitting = false;
   String? _errorMessage;
@@ -51,7 +53,7 @@ class _ForumPageState extends State<ForumPage> {
       _errorMessage = null;
     });
     try {
-      final response = await _forumService.getTopics(page: 1, pageSize: 50);
+      final response = await _forumService.getTopics(page: 1, pageSize: 50, sortBy: _sortBy);
       setState(() {
         _topics = response.data;
       });
@@ -245,7 +247,35 @@ class _ForumPageState extends State<ForumPage> {
     final bool isMobile = MediaQuery.of(context).size.width <= 900;
 
     return Scaffold(
-      appBar: const TopAppBarWidget(),
+      appBar: TopAppBarWidget(
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.sort, color: AppTheme.textPrimary),
+            tooltip: 'Sırala',
+            onSelected: (String result) {
+              setState(() {
+                _sortBy = result;
+              });
+              _fetchTopics();
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'newest',
+                child: Text('En Yeni'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'oldest',
+                child: Text('En Eski'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'popular',
+                child: Text('En Çok Görüntülenen'),
+              ),
+            ],
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
       body: Column(
         children: [
           Expanded(
@@ -272,6 +302,7 @@ class _ForumPageState extends State<ForumPage> {
                                 color: AppTheme.textPrimary,
                               ),
                             ),
+                            const Spacer(),
                             ElevatedButton.icon(
                               onPressed: _openCreateTopicSheet,
                               icon: const Icon(Icons.add),

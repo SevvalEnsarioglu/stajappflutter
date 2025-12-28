@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import '../config/theme.dart';
 
 class TopAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  const TopAppBarWidget({super.key});
+  final List<Widget>? actions;
+
+  const TopAppBarWidget({super.key, this.actions});
 
   @override
   Size get preferredSize => const Size.fromHeight(70);
@@ -40,6 +42,7 @@ class TopAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           _buildNavButton(context, 'İletişim', '/iletisim'),
           const SizedBox(width: 16),
         ],
+        if (actions != null) ...actions!,
       ],
     );
   }
