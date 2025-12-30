@@ -38,6 +38,9 @@ class CommonDrawer extends StatelessWidget {
           _buildDrawerItem(context, 'CV Analiz', '/cv-analiz', Icons.analytics),
           _buildDrawerItem(context, 'Hakkında', '/hakkinda', Icons.info),
           _buildDrawerItem(context, 'İletişim', '/iletisim', Icons.contact_mail),
+          const Divider(),
+          _buildDrawerItem(context, 'Giriş Yap', '/giris', Icons.login),
+          _buildDrawerItem(context, 'Kayıt Ol', '/kayit', Icons.person_add),
         ],
       ),
     );

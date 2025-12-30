@@ -40,6 +40,24 @@ class TopAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           _buildNavButton(context, 'CV Analiz', '/cv-analiz'),
           _buildNavButton(context, 'Hakkında', '/hakkinda'),
           _buildNavButton(context, 'İletişim', '/iletisim'),
+
+          const SizedBox(width: 16),
+          // Auth Buttons
+          OutlinedButton(
+            onPressed: () => Navigator.pushNamed(context, '/giris'),
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            ),
+            child: const Text('Giriş Yap'),
+          ),
+          const SizedBox(width: 12),
+          ElevatedButton(
+            onPressed: () => Navigator.pushNamed(context, '/kayit'),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            ),
+            child: const Text('Kayıt Ol'),
+          ),
           const SizedBox(width: 16),
         ],
         if (actions != null) ...actions!,

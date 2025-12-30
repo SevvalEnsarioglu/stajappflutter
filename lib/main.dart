@@ -9,6 +9,8 @@ import 'pages/forum_konu_secimi_page.dart';
 import 'pages/hakkinda_page.dart';
 import 'pages/iletisim_page.dart';
 import 'pages/cv_analiz_page.dart';
+import 'pages/giris_page.dart';
+import 'pages/kayit_page.dart';
 
 void main() {
   runApp(const StajForumApp());
@@ -41,6 +43,8 @@ class StajForumApp extends StatelessWidget {
         '/chatstj': (context) => const ChatStjPage(),
         '/cv-analiz': (context) => const CVAnalizPage(),
         '/hakkinda': (context) => const HakkindaPage(),
+        '/giris': (context) => const GirisPage(),
+        '/kayit': (context) => const KayitPage(),
         '/iletisim': (context) => const IletisimPage(),
       },
       onGenerateRoute: (settings) {
