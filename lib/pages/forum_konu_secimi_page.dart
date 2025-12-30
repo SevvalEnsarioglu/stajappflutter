@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:provider/provider.dart';
 
 import '../config/theme.dart';
 import '../models/reply.dart';
 import '../models/reply_request.dart';
 import '../models/topic.dart';
+import '../providers/auth_provider.dart';
 import '../services/forum_service.dart';
 import '../widgets/bottom_bar.dart';
 import '../widgets/common_drawer.dart';
@@ -271,7 +273,13 @@ class _ForumKonuSecimiPageState extends State<ForumKonuSecimiPage> {
   }
 
   void _showAddReplySheet() {
-    final TextEditingController nameController = TextEditingController(text: " ");
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final bool isAuthenticated = authProvider.isAuthenticated;
+    final String defaultName = isAuthenticated 
+        ? authProvider.user!.fullName 
+        : "";
+    
+    final TextEditingController nameController = TextEditingController(text: defaultName);
     final TextEditingController contentController = TextEditingController();
 
     showModalBottomSheet(
@@ -304,14 +312,18 @@ class _ForumKonuSecimiPageState extends State<ForumKonuSecimiPage> {
               const SizedBox(height: 16),
               TextField(
                 controller: nameController,
+                enabled: !isAuthenticated, // Giriş yapmışsa disabled
                 style: const TextStyle(color: AppTheme.textPrimary),
-                decoration: const InputDecoration(
-                  labelText: 'Ad Soyad',
-                  labelStyle: TextStyle(color: AppTheme.textSecondary),
-                  enabledBorder: OutlineInputBorder(
+                decoration: InputDecoration(
+                  labelText: isAuthenticated ? 'Ad Soyad (Otomatik dolduruldu)' : 'Ad Soyad',
+                  labelStyle: const TextStyle(color: AppTheme.textSecondary),
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: AppTheme.surfaceLight),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  disabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: AppTheme.surfaceLight),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: AppTheme.primaryColor),
                   ),
                 ),

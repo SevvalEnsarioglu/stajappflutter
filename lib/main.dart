@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:provider/provider.dart';
 import 'config/theme.dart';
+import 'providers/auth_provider.dart';
 import 'pages/anasayfa_page.dart';
 import 'pages/chat_stj_page.dart';
 import 'pages/forum_page.dart';
@@ -11,9 +13,17 @@ import 'pages/iletisim_page.dart';
 import 'pages/cv_analiz_page.dart';
 import 'pages/giris_page.dart';
 import 'pages/kayit_page.dart';
+import 'pages/profil_page.dart';
 
 void main() {
-  runApp(const StajForumApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: const StajForumApp(),
+    ),
+  );
 }
 
 class StajForumApp extends StatelessWidget {
@@ -45,6 +55,7 @@ class StajForumApp extends StatelessWidget {
         '/hakkinda': (context) => const HakkindaPage(),
         '/giris': (context) => const GirisPage(),
         '/kayit': (context) => const KayitPage(),
+        '/profil': (context) => const ProfilPage(),
         '/iletisim': (context) => const IletisimPage(),
       },
       onGenerateRoute: (settings) {
