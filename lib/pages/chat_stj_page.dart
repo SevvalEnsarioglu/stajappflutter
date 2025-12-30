@@ -151,7 +151,7 @@ class _ChatStjPageState extends State<ChatStjPage> {
                       decoration: BoxDecoration(
                         color: AppTheme.surfaceDark,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppTheme.primaryColor.withOpacity(0.3)),
+                        border: Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.3)),
                       ),
                       child: Row(
                         children: [
@@ -179,7 +179,7 @@ class _ChatStjPageState extends State<ChatStjPage> {
                       child: Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: AppTheme.surfaceDark.withOpacity(0.5),
+                          color: AppTheme.surfaceDark.withValues(alpha: 0.5),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: AppTheme.surfaceLight),
                         ),
@@ -251,7 +251,7 @@ class _ChatStjPageState extends State<ChatStjPage> {
         decoration: BoxDecoration(
           color: AppTheme.surfaceLight,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppTheme.primaryColor.withOpacity(0.2)),
+          border: Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.2)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -280,7 +280,7 @@ class _ChatBubble extends StatelessWidget {
     final alignment =
         message.isUser ? Alignment.centerRight : Alignment.centerLeft;
     final backgroundColor =
-        message.isUser ? AppTheme.primaryColor.withOpacity(0.2) : AppTheme.surfaceLight;
+        message.isUser ? AppTheme.primaryColor.withValues(alpha: 0.2) : AppTheme.surfaceLight;
     final borderColor =
         message.isUser ? AppTheme.primaryColor : Colors.transparent;
     final textColor =

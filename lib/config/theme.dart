@@ -61,17 +61,15 @@ class AppTheme {
         primary: primaryColor,
         secondary: secondaryColor,
         surface: surfaceDark,
-        background: backgroundDark,
         error: errorColor,
-        onPrimary: Colors.black, // Dark text on neon
+        onPrimary: Colors.black,
         onSecondary: Colors.white,
         onSurface: textPrimary,
-        onBackground: textPrimary,
       ),
 
       // AppBar Theme
       appBarTheme: AppBarTheme(
-        backgroundColor: backgroundDark.withOpacity(0.8),
+        backgroundColor: backgroundDark.withValues(alpha: 0.8),
         elevation: 0,
         centerTitle: true,
         scrolledUnderElevation: 0,
@@ -102,7 +100,7 @@ class AppTheme {
           backgroundColor: primaryColor,
           foregroundColor: Colors.black,
           elevation: 4,
-          shadowColor: primaryColor.withOpacity(0.4),
+          shadowColor: primaryColor.withValues(alpha: 0.4),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -240,7 +238,7 @@ class AppTheme {
     border: Border.all(color: primaryColor),
     boxShadow: [
       BoxShadow(
-        color: Colors.black.withOpacity(0.2),
+        color: Colors.black.withValues(alpha: 0.2),
         blurRadius: 10,
         offset: const Offset(0, 4),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
 
 import '../config/theme.dart';
 import '../models/topic.dart';
@@ -15,9 +16,15 @@ class TopicCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final description = topic.content.length > 200
-        ? '${topic.content.substring(0, 200)}...'
-        : topic.content;
+    String cleanContent = topic.content;
+    try {
+      final document = parse(topic.content);
+      cleanContent = document.body?.text ?? topic.content;
+    } catch (_) {}
+
+    final description = cleanContent.length > 200
+        ? '${cleanContent.substring(0, 200)}...'
+        : cleanContent;
 
     return Card(
       // CardTheme is already defined in theme.dart
@@ -35,7 +42,7 @@ class TopicCardWidget extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                        color: AppTheme.primaryColor.withOpacity(0.1),
+                        color: AppTheme.primaryColor.withValues(alpha: 0.1),
                         shape: BoxShape.circle),
                     child: const Icon(Icons.person,
                         color: AppTheme.primaryColor, size: 16),

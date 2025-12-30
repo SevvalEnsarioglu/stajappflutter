@@ -127,7 +127,7 @@ class _CVAnalizPageState extends State<CVAnalizPage> {
                 const SizedBox(height: 16),
                 const SizedBox(height: 16),
                 const Text(
-                  "CV'nizi PDF formatında yükleyin, yapay zeka sizin için analiz etsin.",
+                  "Yüklediğiniz özgeçmişler, gelişmiş yapay zeka algoritmalarımız tarafından profesyonel bir insan kaynakları uzmanı titizliğiyle analiz edilmektedir. Sistemimiz CV içeriğinizdeki veriler ne kadar karmaşık veya düzensiz görünürse görünsün, asıl potansiyelinizi ve yetkinliklerinizi odağa alarak kapsamlı bir tarama gerçekleştirir. Bu süreçte profilinizin en güçlü üç özelliği ve kariyer yolculuğunuzda size avantaj sağlayacak üç geliştirilebilir yönünüz objektif bir şekilde belirlenir. Analiz sonunda özgeçmişinizin genel niteliği on üzerinden puanlanarak başvurularınızda daha başarılı olmanız için uygulanabilir ve net stratejik tavsiyeler paylaşılır. Bu sayede staj başvurularınız öncesinde CV'nizin uzman gözündeki yansımasını görebilir ve eksiklerinizi hızla tamamlayabilirsiniz.",
                   textAlign: TextAlign.center,
                   style: TextStyle(color: AppTheme.textSecondary, fontSize: 16),
                 ),

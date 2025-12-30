@@ -38,6 +38,12 @@ dependencies:
   google_fonts: ^6.3.3
   file_picker: ^8.1.1
   syncfusion_flutter_pdf: ^28.1.33
+  flutter_quill: ^11.5.0
+  vsc_quill_delta_to_html: ^1.0.5
+  flutter_widget_from_html: ^0.17.1
+  html: ^0.15.6
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:

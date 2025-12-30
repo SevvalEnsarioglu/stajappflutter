@@ -10,6 +10,7 @@ import '../widgets/bottom_bar.dart';
 import '../widgets/common_drawer.dart';
 import '../widgets/top_app_bar.dart';
 import '../widgets/topic_card.dart';
+import '../widgets/rich_text_editor.dart';
 
 class ForumPage extends StatefulWidget {
   const ForumPage({super.key});
@@ -32,6 +33,7 @@ class _ForumPageState extends State<ForumPage> {
   bool _isSubmitting = false;
   String? _errorMessage;
   List<Topic> _topics = [];
+  String? _contentError;
 
   @override
   void initState() {
@@ -137,21 +139,33 @@ class _ForumPageState extends State<ForumPage> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  _buildTextField(
-                    controller: _contentController,
-                    label: 'İçerik',
-                    maxLines: 6,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'İçerik 10-5000 karakter arasında olmalıdır.';
-                      }
-                      if (value.trim().length < 10 ||
-                          value.trim().length > 5000) {
-                        return 'İçerik 10-5000 karakter arasında olmalıdır.';
-                      }
-                      return null;
-                    },
+                  const SizedBox(height: 16),
+                  Text(
+                    'İçerik',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppTheme.textSecondary,
+                        ),
                   ),
+                  const SizedBox(height: 8),
+                  RichTextEditorWidget(
+                    onChanged: (html) {
+                      _contentController.text = html;
+                      if (_contentError != null) {
+                        setState(() {
+                          _contentError = null;
+                        });
+                      }
+                    },
+                    height: 300,
+                  ),
+                  if (_contentError != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, left: 12),
+                      child: Text(
+                        _contentError!,
+                        style: TextStyle(color: AppTheme.errorColor, fontSize: 12),
+                      ),
+                    ),
                   const SizedBox(height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -180,7 +194,23 @@ class _ForumPageState extends State<ForumPage> {
   }
 
   Future<void> _submitTopic() async {
-    if (!_formKey.currentState!.validate()) {
+    setState(() {
+      _contentError = null;
+    });
+
+    final isFormValid = _formKey.currentState!.validate();
+    
+    // Manual validation for content
+    final content = _contentController.text.trim();
+    final isContentValid = content.isNotEmpty && content != '<p><br></p>';
+    
+    if (!isContentValid) {
+      setState(() {
+        _contentError = 'İçerik girilmesi zorunludur.';
+      });
+    }
+
+    if (!isFormValid || !isContentValid) {
       return;
     }
 
@@ -201,6 +231,7 @@ class _ForumPageState extends State<ForumPage> {
       _authorController.clear();
       _titleController.clear();
       _contentController.clear();
+      _contentError = null;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Topic başarıyla oluşturuldu.')),
       );
@@ -311,7 +342,7 @@ class _ForumPageState extends State<ForumPage> {
                                 backgroundColor: AppTheme.primaryColor,
                                 foregroundColor: Colors.black,
                                 elevation: 8,
-                                shadowColor: AppTheme.primaryColor.withOpacity(0.5),
+                                shadowColor: AppTheme.primaryColor.withValues(alpha: 0.5),
                               ),
                             ),
                           ],
@@ -324,7 +355,7 @@ class _ForumPageState extends State<ForumPage> {
                             width: double.infinity,
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: AppTheme.errorColor.withOpacity(0.1),
+                              color: AppTheme.errorColor.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(color: AppTheme.errorColor),
                             ),

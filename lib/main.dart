@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'config/theme.dart';
 import 'pages/anasayfa_page.dart';
 import 'pages/chat_stj_page.dart';
@@ -21,6 +23,16 @@ class StajForumApp extends StatelessWidget {
       title: 'StajForum',
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        FlutterQuillLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('tr'),
+        Locale('en'),
+      ],
       initialRoute: '/',
       routes: {
         '/': (context) => const AnasayfaPage(),

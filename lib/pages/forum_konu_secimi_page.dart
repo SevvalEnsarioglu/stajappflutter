@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 import '../config/theme.dart';
 import '../models/reply.dart';
@@ -9,6 +10,7 @@ import '../services/forum_service.dart';
 import '../widgets/bottom_bar.dart';
 import '../widgets/common_drawer.dart';
 import '../widgets/top_app_bar.dart';
+import '../widgets/rich_text_editor.dart';
 
 class ForumKonuSecimiPage extends StatefulWidget {
   final String id;
@@ -163,9 +165,9 @@ class _ForumKonuSecimiPageState extends State<ForumKonuSecimiPage> {
                                     border:
                                         Border.all(color: AppTheme.surfaceLight),
                                   ),
-                                  child: Text(
+                                  child: HtmlWidget(
                                     _topic?.content ?? '',
-                                    style: Theme.of(context)
+                                    textStyle: Theme.of(context)
                                         .textTheme
                                         .bodyLarge
                                         ?.copyWith(
@@ -315,33 +317,34 @@ class _ForumKonuSecimiPageState extends State<ForumKonuSecimiPage> {
                 ),
               ),
               const SizedBox(height: 12),
-              TextField(
-                controller: contentController,
-                maxLines: 4,
-                style: const TextStyle(color: AppTheme.textPrimary),
-                decoration: const InputDecoration(
-                  labelText: 'Yanıtınız',
-                  hintText: 'Buraya yazın...',
-                  labelStyle: TextStyle(color: AppTheme.textSecondary),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppTheme.surfaceLight),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppTheme.primaryColor),
-                  ),
-                ),
-              ),
+              RichTextEditorWidget(
+                 height: 250,
+                 placeholder: 'Yanıtınızı buraya yazın...',
+                 onChanged: (html) {
+                   contentController.text = html;
+                 },
+               ),
               const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (contentController.text.trim().isEmpty) return;
+                    if (contentController.text.trim().isEmpty || contentController.text == '<p><br></p>') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Lütfen bir yanıt yazın.'),
+                          backgroundColor: AppTheme.errorColor,
+                        ),
+                      );
+                      return;
+                    }
 
                     try {
-                      // Show loading indicator on button or simple wait
-                      // For now, close sheet and show loading on main screen reload
+                      Navigator.pop(context); // Close sheet immediately to feel faster
                       
+                      // Show loading via global isLoading if desired, or optimistic UI.
+                      // For now we just call API and refresh.
+
                       final request = ReplyRequest(
                         content: contentController.text.trim(),
                         authorName: nameController.text.trim().isNotEmpty
@@ -356,10 +359,10 @@ class _ForumKonuSecimiPageState extends State<ForumKonuSecimiPage> {
                       // Call backend
                       await _forumService.createReply(topicId, request);
                       
-                      if (context.mounted) {
-                         Navigator.pop(context); // Close sheet
-                         _fetchData(); // Refresh list to show new reply
+                      // Refresh list
+                      await _fetchData();
                          
+                      if (context.mounted) {
                          ScaffoldMessenger.of(context).showSnackBar(
                            const SnackBar(
                              content: Text('Yanıtınız gönderildi!'),
@@ -426,9 +429,9 @@ class _ForumKonuSecimiPageState extends State<ForumKonuSecimiPage> {
             ],
           ),
           const SizedBox(height: 8),
-          Text(
+          HtmlWidget(
             reply.content,
-            style: const TextStyle(
+            textStyle: const TextStyle(
               color: AppTheme.textPrimary,
               height: 1.5,
             ),

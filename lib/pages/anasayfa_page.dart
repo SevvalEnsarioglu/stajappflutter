@@ -30,12 +30,12 @@ class AnasayfaPage extends StatelessWidget {
                           color: AppTheme.surfaceDark,
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
-                            color: AppTheme.primaryColor.withOpacity(0.3),
+                            color: AppTheme.primaryColor.withValues(alpha: 0.3),
                             width: 1,
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: AppTheme.primaryColor.withOpacity(0.1),
+                              color: AppTheme.primaryColor.withValues(alpha: 0.1),
                               blurRadius: 20,
                               offset: const Offset(0, 4),
                             ),
@@ -129,7 +129,7 @@ class AnasayfaPage extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 24),
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceDark.withOpacity(0.6), // Slightly transparent for glass feel
+        color: AppTheme.surfaceDark.withValues(alpha: 0.6), // Slightly transparent for glass feel
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: AppTheme.surfaceLight,
@@ -170,7 +170,7 @@ class AnasayfaPage extends StatelessWidget {
         color: AppTheme.backgroundDark,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppTheme.primaryColor.withOpacity(0.2), // Subtle neon border
+          color: AppTheme.primaryColor.withValues(alpha: 0.2), // Subtle neon border
           width: 1,
         ),
       ),
