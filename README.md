@@ -2,6 +2,8 @@
 
 Staj Forum platformunun Flutter ile gelistirilmis mobil uygulamasidir. Web platformu ile es zamanli calisarak stajyerlere mobil cihazlarda forum, kullanici kimlik dogrulama, sohbet ve analiz hizmetleri sunar.
 
+PROJE TANITIMI YOUTUBE LİNK: https://youtu.be/5uuTVMG2KJA
+
 ## Ozellikler
 
 *   **Kullanici Kimlik Dogrulama:**
